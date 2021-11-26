@@ -1,6 +1,11 @@
 h1 {
   margin-left: 1rem;
-  color: rgb(116, 223, 247);
+  color: white;
+}
+input {
+  margin-left: 1rem;
+  padding: 10px;
+  border-color: green;
 }
 body {
   background: grey;
@@ -12,10 +17,18 @@ body {
 .result {
   margin: 1rem;
   padding: 1rem;
+  border: 1px solid green;
   max-width: 300px;
   background: white;
 }
-
+button {
+  color: darkred;
+  cursor: pointer;
+}
+i {
+  color: red;
+  font-size: 20px;
+}
 .loader {
   border: 16px solid grey;
   border-top: 16px solid red;

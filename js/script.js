@@ -1,72 +1,80 @@
-import { publishers } from "./constants/publishers.js";
-const simulateError = false;
-const limit = 10;
+import { products } from "./data/products.js";
+const productContainer = document.querySelector(".product-container");
+// import { displayMessage } from "./ui/displayMessage.js";
+const search = document.querySelector (".search");
+//const wishlist = document.querySelector (".wishlist");
+//const url = "https://fakestoreapi.com/products";
 
-//const url ="https://fakestoreapi.com/products";
+let productsToRender = products;
 
-const resultsContainer = document.querySelector(".results");
+function renderProducts() {
+    productContainer.innerHTML = "";
 
-function createProducts(products) {
-    let html = "";
+    productsToRender.forEach(function (product) {
+        productContainer.innerHTML += `<div class="result">
+                                        <i class="far fa-heart" data-id="${product.id}" data-name="${product.title}"></i>
+                                        <h4> ${product.title}</h4>
+                                         <p> ${product.price} $ </p>
+                                         </div>`;
+    }); 
 
-    products.forEach(function (product) {
-        html += `<span class=product">${product.title}</span>`;
+    const favButtons = document.querySelectorAll(".result i");
+
+    favButtons.forEach((button) => {
+        button.addEventListener("click", handleClick);
     });
 
-    return html;
-}
+    function handleClick() {
+    this.classList.toggle("fa");
+    this.classList.toggle("far");
 
-function displayMessage(messageType, message) {
-    return `div class="message ${messageType}">${message}</div>`;
-}
+    const id = this.dataset.id;
+    const name = this.dataset.title;  
 
-function createPublisher(publisher) {
-    return `div class="result">
-                ´<h4>${publisher.title}</h4>
-                <div class="price">${createProducts(publisher.price)}</div>
-                </div>`
-}
+    const currentFavs = getExistingFavs()
 
-resultsContainer.innerHTML= "";
+    const product = { id: id, name: name };
 
-try {
-    if (simulateError) {
-        throw "Bad things happend";
+    currentFavs.push(product);
+
+    saveFavs(currentFavs);
     }
 
-    for (let i = 0; i < publishers.length; i++) {
-        //exit loop
-        if (limit && i === limit) {
-            break;
+    function  getExistingFavs() {
+        const favs = localStorage.getItem("wishlist");
+
+        if(favs === null) {
+            return [];
+        } else {
+            return JSON.parse(favs);
         }
-
-        resultsContainer.innerHTML += createPublisher(publishers[i]);
     }
-} catch (error) {
-    console.log(error);
-    resultsContainer.innerHTML = displayMessage("error", error);
+
+function saveFavs(favs) {
+    localStorage.setItem("wishlist", JSON.stringify(favs));
 }
-/*
-async function getProducts() {
-try {
-    const response = await fetch(url);
+} 
 
-    const results = await response.json();
+renderProducts();
 
-    const facts = results;
+// Search
 
-    resultsContainer.innerHTML = "";
+    search.onkeyup = function (event) {
+        //console.log(event);
+    
+        const searchValue = event.target.value.trim().toLowerCase();
+    
+        const filteredProducts = products.filter(function (product) {
+            if(product.title.toLowerCase().startsWith(searchValue)) {
+               return true;
+            }
+        });
+        
+        console.log(filteredProducts);
 
-    for(let i = 0; i < facts.length; i++) {
-        console.log(facts[i].title);
+        productsToRender = filteredProducts;
 
-        resultsContainer.innerHTML += `<div class="result">Title: ${facts[i].title}</div><div class="result">Price: ${facts[i].price}</div>`;
-    } 
-   
-    } catch (error) {
-        resultsContainer.innerHTML = displayError("Something wrong happend");
-    }    
-}
+        renderProducts();
+    };
 
-getProducts();
-*/
+ 
