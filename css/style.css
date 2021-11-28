@@ -37,7 +37,15 @@ i {
   height: 120px;
   animation: spin 2s linear infinite;
 }
-
+.menu a {
+  text-decoration: none;
+  color: white;
+  margin: 10px;
+  margin-left: 1rem;
+}
+.menu .active {
+  background-color: red;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);

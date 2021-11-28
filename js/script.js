@@ -1,22 +1,22 @@
 import { products } from "./data/products.js";
 const productContainer = document.querySelector(".product-container");
-// import { displayMessage } from "./ui/displayMessage.js";
+// import displayMessage from "./ui/displayMessage.js";
 const search = document.querySelector (".search");
-//const wishlist = document.querySelector (".wishlist");
-//const url = "https://fakestoreapi.com/products";
+const wishlist = document.querySelector (".wishlist");
+// const url = "https://fakestoreapi.com/products";
 
 let productsToRender = products;
 
 function renderProducts() {
     productContainer.innerHTML = "";
 
-    productsToRender.forEach(function (product) {
-        productContainer.innerHTML += `<div class="result">
+    productsToRender.forEach((product) => {
+            productContainer.innerHTML += `<div class="result">
                                         <i class="far fa-heart" data-id="${product.id}" data-name="${product.title}"></i>
                                         <h4> ${product.title}</h4>
                                          <p> ${product.price} $ </p>
                                          </div>`;
-    }); 
+        }); 
 
     const favButtons = document.querySelectorAll(".result i");
 
@@ -60,17 +60,16 @@ renderProducts();
 // Search
 
     search.onkeyup = function (event) {
-        //console.log(event);
     
-        const searchValue = event.target.value.trim().toLowerCase();
+        const searchValue = event.target.value.trim();
     
         const filteredProducts = products.filter(function (product) {
-            if(product.title.toLowerCase().startsWith(searchValue)) {
+            if(product.price <= searchValue) {
                return true;
             }
         });
         
-        console.log(filteredProducts);
+        //console.log(filteredProducts);
 
         productsToRender = filteredProducts;
 
